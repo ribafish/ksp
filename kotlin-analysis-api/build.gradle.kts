@@ -7,8 +7,8 @@ val libsForTesting by configurations.creating
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.intellij") version "0.6.4"
-    id("org.jetbrains.dokka") version ("1.7.20")
+    id("org.jetbrains.intellij")
+    id("org.jetbrains.dokka")
 }
 
 intellij {

@@ -18,7 +18,7 @@ plugins {
     id("java-gradle-plugin")
     `maven-publish`
     signing
-    id("org.jetbrains.dokka") version ("1.7.20")
+    id("org.jetbrains.dokka")
 }
 
 dependencies {
