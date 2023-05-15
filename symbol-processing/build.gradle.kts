@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.jvm.tasks.Jar
 
 evaluationDependsOn(":common-util")
 evaluationDependsOn(":compiler-plugin")
@@ -21,7 +22,11 @@ dependencies {
     packedJars(project(":common-util")) { isTransitive = false }
 }
 
-tasks.withType<ShadowJar>() {
+tasks.withType<Jar> {
+    archiveClassifier.set("real")
+}
+
+tasks.withType<ShadowJar> {
     archiveClassifier.set("")
     // ShadowJar picks up the `compile` configuration by default and pulls stdlib in.
     // Therefore, specifying another configuration instead.
@@ -32,6 +37,7 @@ tasks.withType<ShadowJar>() {
 tasks {
     publish {
         dependsOn(shadowJar)
+        dependsOn(jar)
         dependsOn(project(":compiler-plugin").tasks["dokkaJavadocJar"])
         dependsOn(project(":compiler-plugin").tasks["sourcesJar"])
     }

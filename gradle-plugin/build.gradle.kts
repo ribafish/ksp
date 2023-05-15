@@ -121,6 +121,10 @@ tasks.named("compileTestKotlin").configure {
     dependsOn(writeTestPropsTask)
 }
 
+tasks.named("processTestResources").configure {
+    dependsOn(writeTestPropsTask)
+}
+
 tasks.named<Test>("test").configure {
     dependsOn(":api:publishAllPublicationsToTestRepository")
     dependsOn(":gradle-plugin:publishAllPublicationsToTestRepository")
