@@ -31,6 +31,7 @@ fun Project.configureMetalava() {
         task.description = "Check API compatibility."
         task.group = "Verification"
         task.args = listOf("--check-compatibility:api:released", API_BASE_FILE) + task.args!!
+        task.outputs.files(API_BASE_FILE)
     }
 
     afterEvaluate {
@@ -45,6 +46,7 @@ fun Project.configureMetalava() {
         task.description = "Update API base file."
         task.group = "formatting"
         task.args = listOf("--api", API_BASE_FILE) + task.args!!
+        task.outputs.files(API_BASE_FILE)
     }
 }
 
