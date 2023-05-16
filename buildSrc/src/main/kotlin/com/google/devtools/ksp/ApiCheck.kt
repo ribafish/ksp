@@ -20,7 +20,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.JavaExec
 
-val API_BASE_FILE="api.base"
+val API_BASE_FILE = "api.base"
 
 /**
  * Adapted from ktlint
@@ -31,7 +31,16 @@ fun Project.configureMetalava() {
         task.description = "Check API compatibility."
         task.group = "Verification"
         task.args = listOf("--check-compatibility:api:released", API_BASE_FILE) + task.args!!
-        task.outputs.files(API_BASE_FILE)
+        task.inputs.files(API_BASE_FILE)
+
+        val outDir = project.buildDir.resolve("reports/checkApi").takeIf { it.mkdirs() || it.exists() }!!
+        val outFile = outDir.resolve("checkApiSuccess.txt")
+        task.outputs.files(outFile)
+        task.outputs.cacheIf { true }
+        task.doLast {
+            task.executionResult.get().assertNormalExitValue()
+            outFile.writeText("SUCCESS")
+        }
     }
 
     afterEvaluate {
