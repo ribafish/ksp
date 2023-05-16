@@ -86,6 +86,7 @@ private fun JavaExec.configureCommonKtlintParams(
     classpath = project.getKtlintConfiguration()
     mainClass.set("com.pinterest.ktlint.Main")
     outputs.file(outputFile)
+    outputs.cacheIf { true }
     args = listOf(
         "--reporter=plain",
         "--reporter=checkstyle,output=$outputFile",
