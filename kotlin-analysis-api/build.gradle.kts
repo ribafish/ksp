@@ -111,6 +111,10 @@ tasks.test {
     }
 }
 
+tasks.ktlint {
+    dependsOn("CopyLibsForTesting")
+}
+
 repositories {
     flatDir {
         dirs("${project.rootDir}/third_party/prebuilt/repo/")

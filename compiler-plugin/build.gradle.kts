@@ -120,3 +120,7 @@ val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
     archiveClassifier.set("javadoc")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
+
+tasks.ktlint {
+    dependsOn("CopyLibsForTesting")
+}
