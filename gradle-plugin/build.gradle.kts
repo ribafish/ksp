@@ -106,7 +106,6 @@ val writeTestPropsTask = tasks.register<WriteProperties>("prepareTestConfigurati
     property("mavenRepoDir", File(rootProject.buildDir, "repos/test").absolutePath)
     property("kspProjectRootDir", rootProject.projectDir.absolutePath)
     property("processorClasspath", project.tasks["compileTestKotlin"].outputs.files.asPath)
-
 }
 
 java {
