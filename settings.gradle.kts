@@ -11,9 +11,6 @@ pluginManagement {
 plugins {
     id("com.gradle.enterprise") version("3.13.1")
     id("com.gradle.common-custom-user-data-gradle-plugin") version "1.10"
-    id("com.github.johnrengelman.shadow") version "7.1.2" apply false
-    id("org.jetbrains.intellij") version "0.6.4" apply false
-    id("org.jetbrains.dokka") version "1.7.20" apply false
 }
 
 gradleEnterprise {
