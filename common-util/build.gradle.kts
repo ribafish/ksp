@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":api")
@@ -31,4 +32,14 @@ val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
     dependsOn(tasks.dokkaJavadoc)
     from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
+}
+
+tasks.withType<PrepareSandboxTask> {
+    val optionsDir = "${this.configDirectory}/options"
+    outputs.dir(optionsDir).withPropertyName("Configuration options directory")
+    outputs.file("$optionsDir/updates.xml").withPropertyName("Configuration options updates settings")
+}
+
+tasks.test {
+    dependsOn("prepareTestingSandbox")
 }

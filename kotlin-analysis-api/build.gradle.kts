@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
+
 description = "Kotlin Symbol Processing implementation using Kotlin Analysis API"
 
 val intellijVersion: String by project
@@ -84,8 +86,14 @@ val JavaPluginConvention.testSourceSet: SourceSet
 val Project.testSourceSet: SourceSet
     get() = javaPluginConvention().testSourceSet
 
+tasks.withType<PrepareSandboxTask> {
+    val optionsDir = "${this.configDirectory}/options"
+    outputs.dir(optionsDir).withPropertyName("Configuration options directory")
+    outputs.file("$optionsDir/updates.xml").withPropertyName("Configuration options updates settings")
+}
+
 tasks.test {
-    dependsOn("CopyLibsForTesting")
+    dependsOn("CopyLibsForTesting", "prepareTestingSandbox")
     maxHeapSize = "2g"
 
     useJUnitPlatform()
