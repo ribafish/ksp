@@ -25,7 +25,7 @@ plugins {
 
     // Adding plugins used in multiple places to the classpath for centralized version control
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
-    id("org.jetbrains.intellij") version "0.6.4" apply false
+    id("org.jetbrains.intellij") version "0.6.5" apply false
     id("org.jetbrains.dokka") version "1.7.20" apply false
 }
 
