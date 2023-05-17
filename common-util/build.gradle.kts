@@ -32,3 +32,10 @@ val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
     from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
 }
+
+normalization {
+    runtimeClasspath {
+        ignore("api-2.0.255-SNAPSHOT.jar")
+        ignore("common-util-2.0.255-SNAPSHOT.jar")
+    }
+}
