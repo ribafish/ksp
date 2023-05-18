@@ -1,4 +1,3 @@
-import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":common-util")
@@ -97,9 +96,4 @@ tasks.test {
 repositories {
     maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap/")
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
-}
-
-tasks.withType<PrepareSandboxTask> {
-    outputs.dirs(project.buildDir.resolve("idea-sandbox/config-test/options"))
-    outputs.files(buildDir.resolve("idea-sandbox/config-test/options/updates.xml"))
 }
