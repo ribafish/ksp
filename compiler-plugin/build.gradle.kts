@@ -27,17 +27,6 @@ tasks {
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
         from(sourceSets.main.get().allSource)
-        from(project(":common-util").sourceSets.main.get().allSource)
-    }
-}
-
-fun ModuleDependency.includeJars(vararg names: String) {
-    names.forEach {
-        artifact {
-            name = it
-            type = "jar"
-            extension = "jar"
-        }
     }
 }
 
@@ -49,8 +38,6 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":common-util"))
 
-    testImplementation(kotlin("stdlib", kotlinBaseVersion))
-    testImplementation("org.jetbrains.kotlin:kotlin-compiler:$kotlinBaseVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-compiler-internal-test-framework:$kotlinBaseVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-scripting-compiler:$kotlinBaseVersion")
 
@@ -59,8 +46,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testRuntimeOnly("org.junit.platform:junit-platform-suite:1.8.2")
 
-    testImplementation(project(":api"))
-    testImplementation(project(":common-util"))
     testImplementation(project(":test-utils"))
 
     libsForTesting(kotlin("stdlib", kotlinBaseVersion))
@@ -111,14 +96,6 @@ tasks.test {
 repositories {
     maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/bootstrap/")
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
-}
-
-val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
-    from(project(":common-util").tasks.dokkaJavadoc.flatMap { it.outputDirectory })
-    archiveClassifier.set("javadoc")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.ktlint {
