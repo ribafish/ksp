@@ -79,6 +79,7 @@ private fun JavaExec.configureCommonKtlintParams(
         it.include("**/*.kts")
         it.exclude("**/testData/**")
         it.exclude("**/build/**")
+        it.exclude("dist/**")
         it.exclude("**/.*/**")
     }
     val outputFile = project.buildDir.resolve("reports/ktlint/ktlint-checkstyle-report.xml")

@@ -99,11 +99,7 @@ repositories {
     maven("https://www.jetbrains.com/intellij-repository/snapshots")
 }
 
-tasks.ktlint {
-    dependsOn("CopyLibsForTesting")
-}
-
 tasks.withType<PrepareSandboxTask> {
-    outputs.files(project.buildDir.resolve("idea-sandbox/config-test/options"))
+    outputs.dirs(project.buildDir.resolve("idea-sandbox/config-test/options"))
     outputs.files(buildDir.resolve("idea-sandbox/config-test/options/updates.xml"))
 }
