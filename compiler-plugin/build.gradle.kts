@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.tasks.PrepareSandboxTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":common-util")
@@ -100,4 +101,9 @@ repositories {
 
 tasks.ktlint {
     dependsOn("CopyLibsForTesting")
+}
+
+tasks.withType<PrepareSandboxTask> {
+    outputs.files(project.buildDir.resolve("idea-sandbox/config-test/options"))
+    outputs.files(buildDir.resolve("idea-sandbox/config-test/options/updates.xml"))
 }
