@@ -19,6 +19,7 @@ package com.google.devtools.ksp
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.PathSensitivity
 
 // This file is mostly ported from AndroidX with minor modifications.
 // https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:buildSrc/src/main/kotlin/androidx/build/Ktlint.kt
@@ -83,10 +84,10 @@ private fun JavaExec.configureCommonKtlintParams(
         it.exclude("**/.*/**")
     }
     val outputFile = project.buildDir.resolve("reports/ktlint/ktlint-checkstyle-report.xml")
-    inputs.files(ktlintInputFiles)
+    inputs.files(ktlintInputFiles).withPropertyName("ktlintInputFiles").withPathSensitivity(PathSensitivity.RELATIVE)
     classpath = project.getKtlintConfiguration()
     mainClass.set("com.pinterest.ktlint.Main")
-    outputs.file(outputFile)
+    outputs.file(outputFile).withPropertyName("ktlintOutputFile")
     outputs.cacheIf { true }
     args = listOf(
         "--reporter=plain",

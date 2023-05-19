@@ -19,6 +19,7 @@ package com.google.devtools.ksp
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.PathSensitivity
 
 val API_BASE_FILE = "api.base"
 
@@ -31,11 +32,11 @@ fun Project.configureMetalava() {
         task.description = "Check API compatibility."
         task.group = "Verification"
         task.args = listOf("--check-compatibility:api:released", API_BASE_FILE) + task.args!!
-        task.inputs.files(API_BASE_FILE)
+        task.inputs.files(API_BASE_FILE).withPropertyName("apiCheckBaseFile").withPathSensitivity(PathSensitivity.RELATIVE)
 
         val outDir = project.buildDir.resolve("reports/checkApi").takeIf { it.mkdirs() || it.exists() }!!
         val outFile = outDir.resolve("checkApiSuccess.txt")
-        task.outputs.files(outFile)
+        task.outputs.files(outFile).withPropertyName("apiCheckSuccessFile")
         task.outputs.cacheIf { true }
         task.doLast {
             task.executionResult.get().assertNormalExitValue()
@@ -55,7 +56,7 @@ fun Project.configureMetalava() {
         task.description = "Update API base file."
         task.group = "formatting"
         task.args = listOf("--api", API_BASE_FILE) + task.args!!
-        task.outputs.files(API_BASE_FILE)
+        task.outputs.file(API_BASE_FILE).withPropertyName("updateApiOutputBaseFile")
     }
 }
 
@@ -74,7 +75,7 @@ private fun JavaExec.configureCommonMetalavaArgs(
         it.exclude("**/build/**")
         it.exclude("**/.*/**")
     }
-    inputs.files(apiFiles)
+    inputs.files(apiFiles).withPropertyName("apiCheckInputFiles").withPathSensitivity(PathSensitivity.RELATIVE)
     classpath = project.getMetalavaConfiguration()
     mainClass.set("com.android.tools.metalava.Driver")
     args = listOf(

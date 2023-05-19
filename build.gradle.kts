@@ -1,6 +1,5 @@
 import com.google.devtools.ksp.configureKtlint
 import com.google.devtools.ksp.configureKtlintApplyToIdea
-import org.jetbrains.dokka.gradle.DokkaCollectorTask
 
 val sonatypeUserName: String? by project
 val sonatypePassword: String? by project
