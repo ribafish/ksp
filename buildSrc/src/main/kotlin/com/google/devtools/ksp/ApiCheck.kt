@@ -66,7 +66,7 @@ fun Project.configureMetalava() {
 private fun JavaExec.configureCommonMetalavaArgs(
     project: Project
 ) {
-    val jdkHome = org.gradle.internal.jvm.Jvm.current().getJavaHome().absolutePath
+    val jdkHome = org.gradle.internal.jvm.Jvm.current().javaHome.absolutePath
     val compileClasspath = project.getCompileClasspath()
     val apiFiles = project.fileTree(project.projectDir).also {
         it.include("**/*.kt")
@@ -82,7 +82,7 @@ private fun JavaExec.configureCommonMetalavaArgs(
         "--jdk-home", jdkHome,
         "--classpath", compileClasspath,
         "--source-files",
-    ) + apiFiles.files.map { it.absolutePath }
+    ) + apiFiles.files.map { it.toRelativeString(project.projectDir) }
 }
 
 private fun Project.getCompileClasspath(): String =

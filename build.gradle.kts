@@ -41,11 +41,11 @@ nexusPublishing {
 
 version = rootProject.extra.get("kspVersion") as String
 
-project.configureKtlintApplyToIdea()
+configureKtlintApplyToIdea()
 subprojects {
     group = "com.google.devtools.ksp"
     version = rootProject.extra.get("kspVersion") as String
-    this.configureKtlint()
+    configureKtlint()
     repositories {
         mavenCentral()
         google()

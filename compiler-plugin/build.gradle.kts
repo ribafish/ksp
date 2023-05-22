@@ -1,3 +1,4 @@
+import com.google.devtools.ksp.AbsolutePathProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":common-util")
@@ -72,8 +73,8 @@ tasks.test {
 
     useJUnitPlatform()
 
+    jvmArgumentProviders.add(AbsolutePathProvider("idea.home.path", buildDir))
     systemProperty("idea.is.unit.test", "true")
-    systemProperty("idea.home.path", buildDir)
     systemProperty("java.awt.headless", "true")
     environment("NO_FS_ROOTS_ACCESS_CHECK", "true")
     environment("PROJECT_CLASSES_DIRS", testSourceSet.output.classesDirs.asPath)
@@ -82,14 +83,14 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
 
-    var tempTestDir: File? = null
+    lateinit var tempTestDir: File
     doFirst {
         tempTestDir = createTempDir()
-        systemProperty("java.io.tmpdir", tempTestDir.toString())
+        jvmArgumentProviders.add(AbsolutePathProvider("java.io.tmpdir", tempTestDir))
     }
 
     doLast {
-        tempTestDir?.let { delete(it) }
+        delete(tempTestDir)
     }
 }
 

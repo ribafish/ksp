@@ -20,7 +20,8 @@ gradleEnterprise {
     buildScan {
         publishAlways()
         isUploadInBackground = System.getenv("CI") == null
-        capture {                      // for plugin >= 3.7
+        capture {
+            // for plugin >= 3.7
             isTaskInputFiles = true
         }
     }
