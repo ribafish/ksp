@@ -1,3 +1,4 @@
+import com.google.devtools.ksp.AbsolutePathProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":common-util")
@@ -15,8 +16,8 @@ tasks.withType<KotlinCompile> {
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.intellij") version "0.6.4"
-    id("org.jetbrains.dokka") version ("1.7.20")
+    id("org.jetbrains.intellij")
+    id("org.jetbrains.dokka")
 }
 
 intellij {
@@ -31,16 +32,6 @@ tasks {
     }
 }
 
-fun ModuleDependency.includeJars(vararg names: String) {
-    names.forEach {
-        artifact {
-            name = it
-            type = "jar"
-            extension = "jar"
-        }
-    }
-}
-
 // WARNING: remember to update the dependencies in symbol-processing as well.
 dependencies {
     implementation(kotlin("stdlib", kotlinBaseVersion))
@@ -49,8 +40,6 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":common-util"))
 
-    testImplementation(kotlin("stdlib", kotlinBaseVersion))
-    testImplementation("org.jetbrains.kotlin:kotlin-compiler:$kotlinBaseVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-compiler-internal-test-framework:$kotlinBaseVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-scripting-compiler:$kotlinBaseVersion")
 
@@ -59,8 +48,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testRuntimeOnly("org.junit.platform:junit-platform-suite:1.8.2")
 
-    testImplementation(project(":api"))
-    testImplementation(project(":common-util"))
     testImplementation(project(":test-utils"))
 
     libsForTesting(kotlin("stdlib", kotlinBaseVersion))
@@ -87,8 +74,8 @@ tasks.test {
 
     useJUnitPlatform()
 
+    jvmArgumentProviders.add(AbsolutePathProvider("idea.home.path", buildDir))
     systemProperty("idea.is.unit.test", "true")
-    systemProperty("idea.home.path", buildDir)
     systemProperty("java.awt.headless", "true")
     environment("NO_FS_ROOTS_ACCESS_CHECK", "true")
     environment("PROJECT_CLASSES_DIRS", testSourceSet.output.classesDirs.asPath)
@@ -97,14 +84,14 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
 
-    var tempTestDir: File? = null
+    lateinit var tempTestDir: File
     doFirst {
         tempTestDir = createTempDir()
-        systemProperty("java.io.tmpdir", tempTestDir.toString())
+        jvmArgumentProviders.add(AbsolutePathProvider("java.io.tmpdir", tempTestDir))
     }
 
     doLast {
-        tempTestDir?.let { delete(it) }
+        delete(tempTestDir)
     }
 }
 
@@ -115,7 +102,9 @@ repositories {
 
 val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
     dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     from(project(":common-util").tasks.dokkaJavadoc.flatMap { it.outputDirectory })
+    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
     archiveClassifier.set("javadoc")
+    // This will not merge them correctly, it will overwrite files when it copies files the 2nd time!!
+    duplicatesStrategy = DuplicatesStrategy.WARN
 }
