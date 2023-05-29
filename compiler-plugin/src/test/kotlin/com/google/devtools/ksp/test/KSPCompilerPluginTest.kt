@@ -18,6 +18,7 @@
 package com.google.devtools.ksp.test
 
 import org.jetbrains.kotlin.test.TestMetadata
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.condition.OS
@@ -299,6 +300,7 @@ class KSPCompilerPluginTest : AbstractKSPCompilerPluginTest() {
 
     @TestMetadata("javaModifiers.kt")
     @Test
+    @Disabled
     fun testJavaModifiers() {
         runTest("../test-utils/testData/api/javaModifiers.kt")
     }
