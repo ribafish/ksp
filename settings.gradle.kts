@@ -27,6 +27,16 @@ gradleEnterprise {
     }
 }
 
+buildCache {
+    remote(gradleEnterprise.buildCache) {
+        isEnabled = true
+        isPush = System.getenv("CI") != null
+    }
+    local {
+        isEnabled = false
+    }
+}
+
 include("api")
 include("gradle-plugin")
 include("common-util")

@@ -54,12 +54,12 @@ jobs:
 
             - name: Ubuntu - ktlin checkApi test
               shell: bash
-              run: ./gradlew ktlint :api:checkApi --stacktrace --info test
+              run: ./gradlew clean ktlint :api:checkApi test --stacktrace --info
 
             - name: Others - test only
               shell: bash
               if: matrix.os != 'ubuntu-latest'
-              run: ./gradlew --stacktrace --info test
+              run: ./gradlew clean test --stacktrace --info
 
             - name: Upload test results
               if: always()
