@@ -1,4 +1,4 @@
-import com.google.devtools.ksp.AbsolutePathProvider
+import com.google.devtools.ksp.RelativizingPathProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 evaluationDependsOn(":common-util")
@@ -84,14 +84,20 @@ tasks.test {
 
     useJUnitPlatform()
 
+    systemProperty("idea.is.unit.test", "true")
+    systemProperty("java.awt.headless", "true")
+    environment("NO_FS_ROOTS_ACCESS_CHECK", "true")
+
     testLogging {
         events("passed", "skipped", "failed")
     }
 
     lateinit var tempTestDir: File
     doFirst {
+        val ideaHomeDir = buildDir.resolve("tmp/ideaHome").takeIf { it.exists() || it.mkdirs() }!!
+        jvmArgumentProviders.add(RelativizingPathProvider("idea.home.path", ideaHomeDir))
         tempTestDir = createTempDir()
-        jvmArgumentProviders.add(AbsolutePathProvider("java.io.tmpdir", tempTestDir))
+        jvmArgumentProviders.add(RelativizingPathProvider("java.io.tmpdir", tempTestDir))
     }
 
     doLast {
