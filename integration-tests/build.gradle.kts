@@ -47,4 +47,13 @@ tasks.named<Test>("test") {
         maxRemoteExecutors.set(1)
         requirements.set(setOf("my-local-agent", "jdk=11", "jdk=9"))
     }
+
+    // JDK_9 environment property is required.
+    // To add a custom location (if not detected automatically) follow https://docs.gradle.org/current/userguide/toolchains.html#sec:custom_loc
+    if (System.getenv("JDK_9") == null) {
+        val launcher9 = javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(9))
+        }
+        environment["JDK_9"] = launcher9.map { it.metadata.installationPath }
+    }
 }
