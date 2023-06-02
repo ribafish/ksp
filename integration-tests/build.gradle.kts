@@ -42,7 +42,7 @@ tasks.named<Test>("test") {
 
     useJUnitPlatform()
     distribution {
-        enabled.set(false)
+        enabled.set(true)
         maxLocalExecutors.set(0)
         maxRemoteExecutors.set(1)
         requirements.set(setOf("my-local-agent", "jdk=11", "jdk=9"))

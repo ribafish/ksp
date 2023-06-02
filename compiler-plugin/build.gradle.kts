@@ -83,6 +83,12 @@ tasks.test {
     maxHeapSize = "2g"
 
     useJUnitPlatform()
+    distribution {
+        enabled.set(false)
+        maxLocalExecutors.set(0)
+        maxRemoteExecutors.set(1)
+        requirements.set(setOf("my-local-agent"))
+    }
 
     systemProperty("idea.is.unit.test", "true")
     systemProperty("java.awt.headless", "true")

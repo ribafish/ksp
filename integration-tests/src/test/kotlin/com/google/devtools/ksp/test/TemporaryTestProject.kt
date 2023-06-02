@@ -4,8 +4,8 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 
 class TemporaryTestProject(projectName: String, baseProject: String? = null) : TemporaryFolder() {
-    private val testProjectSrc = File("src/test/resources", projectName)
-    private val baseProjectSrc = baseProject?.let { File("src/test/resources", baseProject) }
+    private val testProjectSrc = File("build/resources/test", projectName)
+    private val baseProjectSrc = baseProject?.let { File("build/resources/test", baseProject) }
 
     override fun before() {
         super.before()
