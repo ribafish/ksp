@@ -12,6 +12,8 @@ dependencies {
     testImplementation("junit:junit:$junitVersion")
     testImplementation(gradleTestKit())
     testImplementation("org.jetbrains.kotlin:kotlin-compiler:$kotlinBaseVersion")
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.0")
 }
 
 tasks.named<Test>("test") {
@@ -37,4 +39,12 @@ tasks.named<Test>("test") {
     javaLauncher.set(javaToolchains.launcherFor {
         languageVersion.set(JavaLanguageVersion.of(11))
     })
+
+    useJUnitPlatform()
+    distribution {
+        enabled.set(false)
+        maxLocalExecutors.set(0)
+        maxRemoteExecutors.set(1)
+        requirements.set(setOf("my-local-agent", "jdk=11", "jdk=9"))
+    }
 }
