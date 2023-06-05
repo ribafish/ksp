@@ -44,7 +44,7 @@ tasks.named<Test>("test") {
     distribution {
         enabled.set(true)
         maxLocalExecutors.set(0)
-        maxRemoteExecutors.set(1)
+        maxRemoteExecutors.set(8)
         requirements.set(setOf("my-local-agent", "jdk=11", "jdk=9"))
     }
 
