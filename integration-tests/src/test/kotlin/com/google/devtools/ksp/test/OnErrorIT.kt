@@ -13,7 +13,7 @@ class OnErrorIT {
 
     @Test
     fun testOnError() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
             val errors = result.output.lines().filter { it.startsWith("e: [ksp]") }
@@ -25,7 +25,7 @@ class OnErrorIT {
     @Test
     fun testOnExceptionInInit() {
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"init\") }\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
             val errors = result.output.lines().filter { it.startsWith("e: [ksp]") }
@@ -37,7 +37,7 @@ class OnErrorIT {
     @Test
     fun testOnExceptionInProcess() {
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"process\") }\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
             val errors = result.output.lines().filter { it.startsWith("e: [ksp]") }
@@ -49,7 +49,7 @@ class OnErrorIT {
     @Test
     fun testOnExceptionInFinish() {
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"finish\") }\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
             val errors = result.output.lines().filter { it.startsWith("e: [ksp]") }
@@ -61,7 +61,7 @@ class OnErrorIT {
     @Test
     fun testOnExceptionInOnError() {
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"error\") }\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
             val errors = result.output.lines().filter { it.startsWith("e: [ksp]") }
@@ -74,7 +74,7 @@ class OnErrorIT {
 
     @Test
     fun testCreateTwice() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"createTwice\") }\n")
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
@@ -93,7 +93,7 @@ class OnErrorIT {
 
     @Test
     fun testCreateTwiceNotOkOnError() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"createTwice\") }\n")
         File(project.root, "gradle.properties").appendText("\nksp.return.ok.on.error=false")

@@ -13,7 +13,7 @@ class IncrementalMultiChainIT {
 
     @Test
     fun testMultiChain() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val k2 = File(project.root, "workload/src/main/kotlin/K2.kt")
 
         gradleRunner.withArguments("run").build().let { result ->

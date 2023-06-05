@@ -31,7 +31,7 @@ class AndroidIncrementalIT {
     val project: TemporaryTestProject = TemporaryTestProject("playground-android-multi", "playground")
 
     private fun testWithExtraFlags(vararg extras: String) {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             *extras,

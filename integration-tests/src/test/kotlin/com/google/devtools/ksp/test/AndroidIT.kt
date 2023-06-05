@@ -14,7 +14,7 @@ class AndroidIT {
 
     @Test
     fun testPlaygroundAndroid() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         // Disabling configuration cache. See https://github.com/google/ksp/issues/299 for details
         gradleRunner.withArguments(

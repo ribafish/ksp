@@ -20,6 +20,7 @@ tasks.named<Test>("test") {
     systemProperty("kotlinVersion", kotlinBaseVersion)
     systemProperty("kspVersion", version)
     systemProperty("agpVersion", agpBaseVersion)
+    systemProperty("gradleVersion", gradle.gradleVersion)
     jvmArgumentProviders.add(RelativizingPathProvider("testRepo", File(rootProject.buildDir, "repos/test")))
     dependsOn(":api:publishAllPublicationsToTestRepository")
     dependsOn(":gradle-plugin:publishAllPublicationsToTestRepository")

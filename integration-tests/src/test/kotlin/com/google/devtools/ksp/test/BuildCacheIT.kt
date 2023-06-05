@@ -22,7 +22,7 @@ class BuildCacheIT {
         File(project1.root, "gradle.properties").appendText("\nbuildCacheDir=$buildCacheDir")
         File(project2.root, "gradle.properties").appendText("\nbuildCacheDir=$buildCacheDir")
 
-        GradleRunner.create().withProjectDir(project1.root).withArguments(
+        GradleRunner.create().withGradleVersion(project1.gradleVersion).withProjectDir(project1.root).withArguments(
             "--build-cache",
             ":workload:clean",
             "build"
@@ -30,7 +30,7 @@ class BuildCacheIT {
             Assert.assertEquals(TaskOutcome.SUCCESS, it.task(":workload:kspKotlin")?.outcome)
         }
 
-        GradleRunner.create().withProjectDir(project2.root).withArguments(
+        GradleRunner.create().withGradleVersion(project2.gradleVersion).withProjectDir(project2.root).withArguments(
             "--build-cache",
             ":workload:clean",
             "build"

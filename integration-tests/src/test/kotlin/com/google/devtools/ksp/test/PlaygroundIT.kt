@@ -44,7 +44,7 @@ class PlaygroundIT {
     fun testPlayground() {
         // FIXME: `clean` fails to delete files on windows.
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.buildAndCheck("clean", "build")
         gradleRunner.buildAndCheck("clean", "build")
     }
@@ -53,7 +53,7 @@ class PlaygroundIT {
     fun testConfigurationOfConfiguration() {
         // FIXME: `clean` fails to delete files on windows.
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root).withGradleVersion("8.0")
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withGradleVersion("8.0")
         gradleRunner.withArguments(":workload:dependencies", "--info").build().let {
             Assert.assertTrue(
                 it.output.lines().filter { it.startsWith("The configuration :workload:ksp") }.isEmpty()
@@ -67,7 +67,7 @@ class PlaygroundIT {
     fun testBlockOtherCompilerPlugins() {
         // FIXME: `clean` fails to delete files on windows.
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload/build.gradle.kts")
             .appendText("\nksp {\n  blockOtherCompilerPlugins = false\n}\n")
@@ -86,7 +86,7 @@ class PlaygroundIT {
             }
         }
 
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload/build.gradle.kts")
             .appendText("\nksp {\n  allowSourcesFromOtherPlugins = true\n}\n")
@@ -101,13 +101,13 @@ class PlaygroundIT {
     /** Regression test for https://github.com/google/ksp/issues/518. */
     @Test
     fun testBuildWithConfigureOnDemand() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.buildAndCheck("--configure-on-demand", ":workload:build")
     }
 
     @Test
     fun testBuildCache() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         // The first build can be FROM_CACHE or SUCCESS, and we only care about the second build.
         gradleRunner.buildAndCheck("--build-cache", ":workload:clean", "build")
         gradleRunner.buildAndCheck("--build-cache", ":workload:clean", "build") {
@@ -119,7 +119,7 @@ class PlaygroundIT {
     fun testAllWarningsAsErrors() {
         File(project.root, "workload/build.gradle.kts")
             .appendText("\nksp {\n  allWarningsAsErrors = true\n}\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.withArguments("build").buildAndFail().let { result ->
             Assert.assertTrue(result.output.contains("This is a harmless warning."))
         }
@@ -128,7 +128,7 @@ class PlaygroundIT {
     // Compiler's test infra report this kind of error before KSP, so it is not testable there.
     @Test
     fun testNoFunctionName() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         fun buildAndFileAndCheck() {
             gradleRunner.withArguments("build").buildAndFail().let { result ->
@@ -152,7 +152,7 @@ class PlaygroundIT {
             "test-processor/src/main/resources/META-INF/services/" +
                 "com.google.devtools.ksp.processing.SymbolProcessorProvider"
         ).writeText("RewriteProcessorProvider")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.withArguments("build").buildAndFail().let { result ->
             Assert.assertTrue(result.output.contains("kotlin.io.FileAlreadyExistsException"))
         }
@@ -179,7 +179,7 @@ class PlaygroundIT {
             }
             """.trimIndent()
         )
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val result = gradleRunner.withArguments("clean", "build").build()
 
         Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:build")?.outcome)
@@ -219,7 +219,7 @@ class PlaygroundIT {
             }
             """.trimIndent()
         )
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val result = gradleRunner.withArguments("clean", "build").build()
 
         Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:build")?.outcome)
@@ -247,7 +247,7 @@ class PlaygroundIT {
         buildFile.appendText("\n}")
 
         val kotlinVersion = System.getProperty("kotlinVersion").split('-').first()
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.buildAndCheck("clean", "build") { result ->
             Assert.assertTrue(result.output.contains("language version: 1.5"))
             Assert.assertTrue(result.output.contains("api version: 1.5"))
@@ -258,7 +258,7 @@ class PlaygroundIT {
 
     @Test
     fun testExcludeProcessor() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload/build.gradle.kts")
             .appendText("\nksp {\n  excludeProcessor(\"TestProcessorProvider\")\n")
@@ -291,7 +291,7 @@ class PlaygroundIT {
         buildFile.appendText("\n    kotlinOptions.freeCompilerArgs += \"-Xjvm-default=all\"")
         buildFile.appendText("\n}")
 
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.buildAndCheck("clean", "build") { result ->
             Assert.assertTrue(result.output.contains("platform: JVM"))
             Assert.assertTrue(result.output.contains("jvm default mode: all"))

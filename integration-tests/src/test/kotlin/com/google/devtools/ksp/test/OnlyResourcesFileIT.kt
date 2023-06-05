@@ -11,7 +11,7 @@ class OnlyResourcesFileIT {
 
     @Test
     fun test() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",

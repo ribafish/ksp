@@ -15,7 +15,7 @@ class MultiplatformIT {
 
     @Test
     fun testJVM() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val resultCleanBuild =
             gradleRunner.withArguments("--configuration-cache-problems=warn", "clean", "build").build()

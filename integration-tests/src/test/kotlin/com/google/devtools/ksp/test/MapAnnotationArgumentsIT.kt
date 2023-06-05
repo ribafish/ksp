@@ -19,7 +19,7 @@ class MapAnnotationArgumentsIT {
 
     @Test
     fun testMapAnnotationArguments() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("assemble", "-Pksp.map.annotation.arguments.in.java=true").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:kspKotlin")?.outcome)

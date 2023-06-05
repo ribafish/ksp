@@ -43,7 +43,7 @@ class KMPImplementedIT {
     @Test
     fun testJvm() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",
@@ -67,7 +67,7 @@ class KMPImplementedIT {
     @Test
     fun testJvmErrorLog() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload-jvm/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"process\") }\n")
         gradleRunner.withArguments(
@@ -84,7 +84,7 @@ class KMPImplementedIT {
     @Test
     fun testJs() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",
@@ -108,7 +108,7 @@ class KMPImplementedIT {
     @Test
     fun testJsErrorLog() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload-js/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"process\") }\n")
         gradleRunner.withArguments(
@@ -126,7 +126,7 @@ class KMPImplementedIT {
     fun testJsFailWarning() {
         File(project.root, "workload-js/build.gradle.kts")
             .appendText("\nksp {\n  allWarningsAsErrors = true\n}\n")
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",
@@ -138,7 +138,7 @@ class KMPImplementedIT {
     @Test
     fun testAndroidNative() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",
@@ -167,7 +167,7 @@ class KMPImplementedIT {
     @Test
     fun testLinuxX64() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val genDir = File(project.root, "workload-linuxX64/build/generated/ksp/linuxX64/linuxX64Main/kotlin")
 
         gradleRunner.withArguments(
@@ -220,7 +220,7 @@ class KMPImplementedIT {
     @Test
     fun testNonEmbeddableArtifact() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments(
             "--configuration-cache-problems=warn",
@@ -243,7 +243,7 @@ class KMPImplementedIT {
     @Test
     fun testLinuxX64ErrorLog() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         File(project.root, "workload-linuxX64/build.gradle.kts")
             .appendText("\nksp { arg(\"exception\", \"process\") }\n")
@@ -306,7 +306,7 @@ class KMPImplementedIT {
     @Test
     fun testMainConfiguration() {
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val buildScript = File(project.root, "workload/build.gradle.kts")
         val lines = buildScript.readLines().takeWhile {

@@ -21,7 +21,7 @@ class HmppIT {
 
     @Test
     fun testTraditional() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         taskToFilesTraditional.forEach { (task, expected) ->
             gradleRunner.withArguments(
@@ -66,7 +66,7 @@ class HmppIT {
 
     @Test
     fun testHmpp() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         taskToFilesHmpp.forEach { (task, expected) ->
             gradleRunner.withArguments(

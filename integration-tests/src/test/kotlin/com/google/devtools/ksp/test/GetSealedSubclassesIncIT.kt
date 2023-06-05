@@ -13,7 +13,7 @@ class GetSealedSubclassesIncIT {
 
     @Test
     fun testGetSealedSubclassesInc() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val expected2 = listOf(
             "w: [ksp] Processing Impl1.kt",

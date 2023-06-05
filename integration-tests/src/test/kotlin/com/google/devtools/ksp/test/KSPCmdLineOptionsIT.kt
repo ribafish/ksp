@@ -19,7 +19,7 @@ class KSPCmdLineOptionsIT {
     val project: TemporaryTestProject = TemporaryTestProject("cmd-options")
 
     private fun runCmdCompiler(pluginOptions: List<String>): CompileResult {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.withArguments("clean", ":processors:build").build()
         val processorJar = File(project.root, "processors/build/libs/processors-1.0-SNAPSHOT.jar")
         val classLoader = URLClassLoader(arrayOf(processorJar.toURI().toURL()), javaClass.classLoader)

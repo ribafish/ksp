@@ -78,7 +78,7 @@ class IncrementalIT {
 
     @Test
     fun testUpToDate() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
@@ -91,7 +91,7 @@ class IncrementalIT {
 
     @Test
     fun testIsolating() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
@@ -136,7 +136,7 @@ class IncrementalIT {
 
     @Test
     fun testMultipleChanges() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
@@ -159,7 +159,7 @@ class IncrementalIT {
 
     @Test
     fun testMultipleDeletes() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
@@ -204,7 +204,7 @@ class IncrementalIT {
 
     @Test
     fun testArgChange() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.withArguments("assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
         }
@@ -237,7 +237,7 @@ class IncrementalIT {
 
     @Test
     fun testProcessorChange() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.withArguments("build").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:kspKotlin")?.outcome)
             Assert.assertEquals(TaskOutcome.NO_SOURCE, result.task(":workload:kspTestKotlin")?.outcome)

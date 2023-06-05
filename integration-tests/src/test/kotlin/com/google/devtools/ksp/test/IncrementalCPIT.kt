@@ -39,7 +39,7 @@ class IncrementalCPIT {
 
     @Test
     fun testCPChanges() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         gradleRunner.withArguments("clean", "assemble").build().let { result ->
             Assert.assertEquals(TaskOutcome.SUCCESS, result.task(":workload:assemble")?.outcome)
@@ -75,7 +75,7 @@ class IncrementalCPIT {
     }
 
     private fun toggleFlags(vararg extras: String) {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         gradleRunner.withArguments(
             *extras,

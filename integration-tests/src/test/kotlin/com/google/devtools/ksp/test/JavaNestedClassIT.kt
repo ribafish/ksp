@@ -14,7 +14,7 @@ class JavaNestedClassIT {
     @Test
     fun testJavaNestedClass() {
 
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val resultCleanBuild = gradleRunner.withArguments("clean", "build").build()
         Assert.assertEquals(TaskOutcome.SUCCESS, resultCleanBuild.task(":workload:build")?.outcome)

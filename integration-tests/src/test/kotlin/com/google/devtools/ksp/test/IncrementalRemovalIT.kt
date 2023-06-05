@@ -13,7 +13,7 @@ class IncrementalRemovalIT {
 
     @Test
     fun testRemoveOutputs() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val k1 = "workload/src/main/kotlin/p1/K1.kt"
 
         gradleRunner.withArguments("run").build().let { result ->

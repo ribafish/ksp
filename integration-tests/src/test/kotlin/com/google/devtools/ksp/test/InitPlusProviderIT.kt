@@ -15,7 +15,7 @@ class InitPlusProviderIT {
 
     @Test
     fun testInitPlusProvider() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val resultCleanBuild = gradleRunner.withArguments("clean", "build").build()
 

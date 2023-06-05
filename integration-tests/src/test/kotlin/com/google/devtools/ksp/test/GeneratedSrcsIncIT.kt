@@ -13,7 +13,7 @@ class GeneratedSrcsIncIT {
 
     @Test
     fun testGeneratedSrcsInc() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
 
         val expected = listOf(
             "w: [ksp] 1: [File: Bar.kt, File: Baz.kt]",

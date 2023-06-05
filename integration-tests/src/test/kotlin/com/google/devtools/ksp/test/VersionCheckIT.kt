@@ -14,7 +14,7 @@ class VersionCheckIT {
 
     @Test
     fun testVersion() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val result = gradleRunner.withArguments(
             "-PkotlinVersion=1.4.20", "clean", "build"
         ).buildAndFail()
@@ -23,7 +23,7 @@ class VersionCheckIT {
 
     @Test
     fun testVersionOK() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val result = gradleRunner.withArguments(
             "clean", "build"
         ).build()
@@ -33,7 +33,7 @@ class VersionCheckIT {
 
     @Test
     fun testMuteVersionCheck() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         val result = gradleRunner.withArguments(
             "-PkotlinVersion=1.4.20", "-Pksp.version.check=false", "clean", "build"
         ).buildAndFail()

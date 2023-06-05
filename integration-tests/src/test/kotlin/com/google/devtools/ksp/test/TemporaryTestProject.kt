@@ -6,6 +6,7 @@ import java.io.File
 class TemporaryTestProject(projectName: String, baseProject: String? = null) : TemporaryFolder() {
     private val testProjectSrc = File("build/resources/test", projectName)
     private val baseProjectSrc = baseProject?.let { File("build/resources/test", baseProject) }
+    lateinit var gradleVersion: String
 
     override fun before() {
         super.before()
@@ -13,6 +14,7 @@ class TemporaryTestProject(projectName: String, baseProject: String? = null) : T
         baseProjectSrc?.copyRecursively(root)
         testProjectSrc.copyRecursively(root, true)
 
+        gradleVersion = System.getProperty("gradleVersion")
         val kotlinVersion = System.getProperty("kotlinVersion")
         val kspVersion = System.getProperty("kspVersion")
         val agpVersion = System.getProperty("agpVersion")

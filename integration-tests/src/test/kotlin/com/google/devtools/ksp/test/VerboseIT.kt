@@ -41,7 +41,7 @@ class VerboseIT {
 
     @Test
     fun testNoProvider() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         File(
             project.root,
             "test-processor/src/main/resources/META-INF/services/" +
@@ -54,7 +54,7 @@ class VerboseIT {
 
     @Test
     fun testProviderAndRoundLogging() {
-        val gradleRunner = GradleRunner.create().withProjectDir(project.root)
+        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root)
         gradleRunner.buildAndCheck("--debug", "clean", "build") { result ->
             Assert.assertTrue(
                 result.output.contains(
