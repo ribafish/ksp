@@ -1,4 +1,6 @@
 import com.google.devtools.ksp.RelativizingPathProvider
+import com.gradle.enterprise.gradleplugin.testdistribution.internal.TestDistributionExtensionInternal
+import java.time.Duration
 
 val junitVersion: String by project
 val kotlinBaseVersion: String by project
@@ -46,7 +48,8 @@ tasks.named<Test>("test") {
         enabled.set(true)
         maxLocalExecutors.set(0)
         maxRemoteExecutors.set(8)
-        requirements.set(setOf("my-local-agent", "jdk=11", "jdk=9"))
+        requirements.set(setOf("jdk=11", "jdk=9", "android"))
+        (this as TestDistributionExtensionInternal).forkedVMShutdownTimeout.set(Duration.ofMinutes(10))
     }
 
     // JDK_9 environment property is required.

@@ -10,11 +10,6 @@ ENV JDK9=/opt/java/openjdk-9
 ENV JDK_9=${JDK9}
 COPY --from=openjdk9 /opt/java/openjdk ${JDK9}
 
-ENV TEST_DISTRIBUTION_AGENT_SERVER=https://ec2-3-237-201-221.compute-1.amazonaws.com
-ENV TEST_DISTRIBUTION_AGENT_ALLOW_UNTRUSTED=true
-ENV TEST_DISTRIBUTION_AGENT_CAPABILITIES=my-local-agent,android
-ENV TEST_DISTRIBUTION_AGENT_API_KEY=cynkhriekpan6vqmfcrjfmkelhbvosxyjkvffeuehz6nung65t5a
-
 # Android SDK installation
 
 USER 0
@@ -47,3 +42,7 @@ RUN echo y | ${CMDLINE_TOOLS_ROOT}/sdkmanager "tools" && \
 RUN echo y | ${CMDLINE_TOOLS_ROOT}/sdkmanager "platforms;android-UpsideDownCake" && \
 	echo y | ${CMDLINE_TOOLS_ROOT}/sdkmanager "platforms;android-33" && \
 	echo y | ${CMDLINE_TOOLS_ROOT}/sdkmanager "platforms;android-32"
+
+# Gradle Enterprise Test Distribution additional settings
+# capabilities picked automatically: os=linux,java=9,java=11,java=17
+ENV TEST_DISTRIBUTION_AGENT_CAPABILITIES=android,android32,android33,android34
