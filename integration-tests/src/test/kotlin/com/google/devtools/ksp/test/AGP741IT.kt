@@ -30,7 +30,8 @@ class AGP741IT {
 
     @Test
     fun testDependencyResolutionCheck() {
-        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withGradleVersion("7.6")
+        val gradleRunner = GradleRunner.create()
+            .withGradleVersion(project.gradleVersion).withProjectDir(project.root).withGradleVersion("7.6")
 
         File(project.root, "gradle.properties").appendText("\nagpVersion=7.4.1")
         gradleRunner.withArguments(":workload:compileDebugKotlin").build().let { result ->

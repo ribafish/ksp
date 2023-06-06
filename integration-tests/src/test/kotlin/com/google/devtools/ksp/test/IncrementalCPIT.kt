@@ -75,7 +75,8 @@ class IncrementalCPIT {
     }
 
     private fun toggleFlags(vararg extras: String) {
-        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create()
+            .withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         gradleRunner.withArguments(
             *extras,

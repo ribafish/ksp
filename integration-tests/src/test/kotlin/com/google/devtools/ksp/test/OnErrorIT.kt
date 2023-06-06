@@ -74,7 +74,8 @@ class OnErrorIT {
 
     @Test
     fun testCreateTwice() {
-        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create()
+            .withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"createTwice\") }\n")
         gradleRunner.withArguments("clean", "assemble").buildAndFail().let { result ->
@@ -93,7 +94,8 @@ class OnErrorIT {
 
     @Test
     fun testCreateTwiceNotOkOnError() {
-        val gradleRunner = GradleRunner.create().withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
+        val gradleRunner = GradleRunner.create()
+            .withGradleVersion(project.gradleVersion).withProjectDir(project.root).withDebug(true)
 
         File(project.root, "workload/build.gradle.kts").appendText("\nksp { arg(\"exception\", \"createTwice\") }\n")
         File(project.root, "gradle.properties").appendText("\nksp.return.ok.on.error=false")

@@ -39,9 +39,11 @@ tasks.named<Test>("test") {
     }
 
     // Java 11 is required to run tests
-    javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    })
+    javaLauncher.set(
+        javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(11))
+        }
+    )
 
     useJUnitPlatform()
     distribution {
