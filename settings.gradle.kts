@@ -15,6 +15,7 @@ plugins {
 
 gradleEnterprise {
     server = "https://ec2-3-237-201-221.compute-1.amazonaws.com"
+    accessKey = "vvykd2djhym54fyi7txk6tcodjwp3yhtz3fqz425tldfcpnkytwa" //tester
     allowUntrustedServer = true
 
     buildScan {
