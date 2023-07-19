@@ -23,5 +23,4 @@ tasks.named<Test>("test") {
     dependsOn(":gradle-plugin:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing-cmdline:publishAllPublicationsToTestRepository")
-    onlyIf { false }
 }
