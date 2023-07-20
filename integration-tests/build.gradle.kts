@@ -18,7 +18,13 @@ dependencies {
     testImplementation(project(":symbol-processing-cmdline"))
 }
 
-tasks.named<Test>("test") {
+val tempTestDir = File(buildDir, "tmp/test")
+val cleanupTemporaryTestDir = tasks.register("cleanupTemporaryTestDir", Delete::class.java) {
+    delete = setOf(tempTestDir)
+}
+
+tasks.test {
+    dependsOn(cleanupTemporaryTestDir)
     dependsOn(":api:publishAllPublicationsToTestRepository")
     dependsOn(":gradle-plugin:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing:publishAllPublicationsToTestRepository")
@@ -28,14 +34,12 @@ tasks.named<Test>("test") {
     systemProperty("kspVersion", version)
     systemProperty("agpVersion", agpBaseVersion)
 
-    val testBuildDir = File(buildDir, "tmp/test")
-    jvmArgumentProviders.add(RelativizingLocalPathProvider("java.io.tmpdir", testBuildDir))
+    jvmArgumentProviders.add(RelativizingLocalPathProvider("java.io.tmpdir", tempTestDir))
     val testRepo = File(rootProject.buildDir, "repos/test")
     jvmArgumentProviders.add(RelativizingLocalPathProvider("testRepo", testRepo))
 
     doFirst {
         if (!testRepo.exists()) testRepo.mkdirs()
-        testBuildDir.deleteRecursively()
     }
 
     // JDK_9 environment property is required.
@@ -46,4 +50,6 @@ tasks.named<Test>("test") {
         }
         environment["JDK_9"] = launcher9.map { it.metadata.installationPath }
     }
+
+    maxParallelForks = gradle.startParameter.maxWorkerCount / 2
 }

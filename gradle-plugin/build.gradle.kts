@@ -131,16 +131,19 @@ tasks.named("processTestResources").configure {
     dependsOn(writeTestPropsTask)
 }
 
+val cleanupTemporaryTestDir = tasks.register("cleanupTemporaryTestDir", Delete::class.java) {
+    delete = setOf(tempTestDir)
+}
+
 tasks.test {
+    dependsOn(cleanupTemporaryTestDir)
     dependsOn(":api:publishAllPublicationsToTestRepository")
     dependsOn(":gradle-plugin:publishAllPublicationsToTestRepository")
     dependsOn(":symbol-processing:publishAllPublicationsToTestRepository")
 
     jvmArgumentProviders.add(RelativizingLocalPathProvider("java.io.tmpdir", tempTestDir))
 
-    doFirst {
-        tempTestDir.deleteRecursively()
-    }
+    maxParallelForks = gradle.startParameter.maxWorkerCount / 2
 }
 
 abstract class WriteVersionSrcTask @Inject constructor(
