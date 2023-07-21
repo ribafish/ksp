@@ -51,5 +51,5 @@ tasks.test {
         environment["JDK_9"] = launcher9.map { it.metadata.installationPath }
     }
 
-    maxParallelForks = gradle.startParameter.maxWorkerCount / 2
+    maxParallelForks = gradle.startParameter.maxWorkerCount
 }

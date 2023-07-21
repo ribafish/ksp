@@ -143,7 +143,7 @@ tasks.test {
 
     jvmArgumentProviders.add(RelativizingLocalPathProvider("java.io.tmpdir", tempTestDir))
 
-    maxParallelForks = gradle.startParameter.maxWorkerCount / 2
+    maxParallelForks = 2
 }
 
 abstract class WriteVersionSrcTask @Inject constructor(
