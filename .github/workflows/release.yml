@@ -1,22 +1,16 @@
-# Workflow to run tests
+# Workflow to build release artifacts
 
-name: CI
+name: release artifacts
 
 on:
-  push:
-    branches: [ main, 1.0.12-release, 1.0.13-release ]
-  pull_request:
-    branches: [ main, 1.0.12-release, 1.0.13-release ]
+  release:
+    types: [ created ]
 
 jobs:
   build-and-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
 
     # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
     - name: Setup Java 9
@@ -26,7 +20,6 @@ jobs:
         java-package: jdk
         architecture: x64
     - name: set JDK_9 environment variable for kotlin compiler
-      shell: bash
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       run: echo ::set-env name=JDK_9::$(echo $JAVA_HOME)
@@ -54,15 +47,6 @@ jobs:
       with:
         path: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-    # Run ktlint
-    - name: lint
-      if: matrix.os == 'ubuntu-latest'
-      run: ./gradlew ktlint
-
-    # Check API compatibility
-    - name: API compatibility check
-      if: matrix.os == 'ubuntu-latest'
-      run: ./gradlew :api:checkApi
 
     # Run tests
     - name: test
@@ -72,10 +56,26 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: test-reports-${{ matrix.os }}
+        name: test-reports-${{ runner.os }}
         path: |
           compiler-plugin/build/reports
           integration-tests/build/reports
           gradle-plugin/build/reports
           common-util/build/reports
-          kotlin-analysis-api/build/reports
+
+    # Build KSP artifacts
+    - name: build
+      run: |
+        REF=${{ github.ref }} # refs/tags/$KSP_VERSION
+        ./gradlew --info -PkspVersion=${REF:10} -PoutRepo=$(pwd)/build/repos/release publishAllPublicationsToMavenRepository
+    - name: pack
+      run: cd build/repos/release/ && zip -r ../../artifacts.zip .
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./build/artifacts.zip
+        asset_name: artifacts.zip
+        asset_content_type: application/zip

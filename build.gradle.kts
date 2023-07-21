@@ -22,6 +22,10 @@ repositories {
 plugins {
     kotlin("jvm") version "1.8.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+
+    // Adding plugins used in multiple places to the classpath for centralized version control
+    id("com.github.johnrengelman.shadow") version "7.1.2" apply false
+    id("org.jetbrains.dokka") version "1.8.10" apply false
 }
 
 nexusPublishing {
@@ -36,11 +40,11 @@ nexusPublishing {
 
 version = rootProject.extra.get("kspVersion") as String
 
-project.configureKtlintApplyToIdea()
+configureKtlintApplyToIdea()
 subprojects {
     group = "com.google.devtools.ksp"
     version = rootProject.extra.get("kspVersion") as String
-    this.configureKtlint()
+    configureKtlint()
     repositories {
         mavenCentral()
         google()
@@ -93,5 +97,28 @@ subprojects {
     tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        javaCompiler.set(
+            javaToolchains.compilerFor {
+                languageVersion.set(JavaLanguageVersion.of(11))
+            }
+        )
+    }
+
+    tasks.withType<Test>().configureEach {
+        // Java 11 is required to run tests
+        javaLauncher.set(
+            javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(11))
+            }
+        )
+    }
+
+    tasks.withType<JavaExec>().configureEach {
+        // Java 11 is required to run
+        javaLauncher.set(
+            javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(11))
+            }
+        )
     }
 }
